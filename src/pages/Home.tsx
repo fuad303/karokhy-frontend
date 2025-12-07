@@ -1,8 +1,10 @@
+import { useLoaderData } from "react-router-dom";
 import { useApp } from "../context/Context";
+import type { HomeInterface } from "../interfaces/home.interface";
 
 const Home = () => {
   const { backendErrorPopup, setBackendErrorPopup } = useApp();
-
+  const data = useLoaderData<HomeInterface>();
   return (
     <div>
       Here is home
@@ -13,7 +15,7 @@ const Home = () => {
       >
         Click me
       </button>
-      {backendErrorPopup && <>working</>}
+      {backendErrorPopup && <>{data.message}</>}
     </div>
   );
 };
