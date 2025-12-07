@@ -5,7 +5,6 @@ import type { HomeInterface } from "../interfaces/home.interface";
 const Home = () => {
   const { backendErrorPopup, setBackendErrorPopup } = useApp();
   const data = useLoaderData<HomeInterface>();
-  console.log(data);
 
   return (
     <div>
