@@ -1,5 +1,14 @@
+import { Outlet } from "react-router-dom";
+
 const MainLayout = () => {
-  return <div>Here is the main layout</div>;
+  return (
+    <div>
+      main layout
+      <main>
+        <Outlet />
+      </main>
+    </div>
+  );
 };
 
 export default MainLayout;
