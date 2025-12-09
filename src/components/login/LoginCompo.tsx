@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import type { LoginFormType } from "../../schema/login.schema";
-import axios from "axios";
+import api from "../../config/axios.interceptor";
+
 
 const LoginCompo = () => {
   const {
@@ -12,7 +13,7 @@ const LoginCompo = () => {
   const onSubmit = async (data: LoginFormType) => {
     console.log(data);
     try {
-      const response = await axios.post("/login", {
+      const response = await api.post("/login", {
         username: data.username,
         password: data.password,
         role: data.role,
