@@ -7,7 +7,6 @@ const api = axios.create({
 // REQUEST INTERCEPTOR
 api.interceptors.request.use(
   (config) => {
-    console.log("url;", config.baseURL);
     return config;
   },
   (error) => Promise.reject(error)
