@@ -5,4 +5,6 @@ export class Loader {
       message: "Hello from loader",
     };
   }
+  
 }
+
