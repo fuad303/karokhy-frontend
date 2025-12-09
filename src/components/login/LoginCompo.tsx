@@ -1,18 +1,19 @@
 import { useForm } from "react-hook-form";
 import type { LoginFormType } from "../../schema/login.schema";
-import axios from "axios";
+import api from "../../config/axios.interceptor";
 
 const LoginCompo = () => {
   const {
     register,
+
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormType>();
 
   const onSubmit = async (data: LoginFormType) => {
     console.log(data);
     try {
-      const response = await axios.post("/login", {
+      const response = await api.post("/login", {
         username: data.username,
         password: data.password,
         role: data.role,
@@ -105,17 +106,16 @@ const LoginCompo = () => {
                 <input
                   type="radio"
                   {...register("role", { required: "انتخاب نقش ضروری است" })}
-                  value="Partner"
+                  value="SHAREHOLDER"
                   className="accent-green-600"
                 />
                 <span>شریک</span>
               </label>
-              Karokhy dev team, [09/12/2025 09:49]
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
                   {...register("role", { required: "انتخاب نقش ضروری است " })}
-                  value="Accountant"
+                  value="ACCOUNTANT"
                   className="accent-yellow-600"
                 />
                 <span>حسابدار</span>
@@ -130,6 +130,7 @@ const LoginCompo = () => {
 
           <div>
             <button
+              disabled={isSubmitting}
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
