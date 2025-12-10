@@ -1,28 +1,49 @@
 import { useForm } from "react-hook-form";
 import type { LoginFormType } from "../../schema/login.schema";
 import api from "../../config/axios.interceptor";
+import { redirect } from "react-router-dom";
+import { useApp } from "../../context/Context";
+import ErrorMessage from "../errors/ErrorMessage";
 
 const LoginCompo = () => {
   const {
-    register,
+    backendErrorPopup,
+    setBackendErrorPopup,
+    setBackendErrorMessage,
+    backendErrorMessage,
+  } = useApp();
 
+  const {
+    register,
+    reset,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormType>();
 
   const onSubmit = async (data: LoginFormType) => {
-    console.log(data);
     try {
       const response = await api.post("/login", {
         username: data.username,
         password: data.password,
         role: data.role,
       });
-      console.log("Login successfully ", response.data);
-    } catch (error) {
-      console.log("login error ", error);
+      if (response.status === 200) {
+        redirect("/");
+        reset();
+      } else {
+        throw new Error("");
+      }
+    } catch (error: any) {
+      const msg =
+        error?.response?.data?.message || // message from server
+        error?.message || // axios or JS error message
+        "مشکلی رخ داد";
+      setBackendErrorMessage(msg);
+      setBackendErrorPopup(true);
     }
   };
+
+  if (backendErrorPopup) return <ErrorMessage error={backendErrorMessage} />;
 
   return (
     <div
