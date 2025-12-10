@@ -1,11 +1,14 @@
 import { useForm } from "react-hook-form";
 import type { LoginFormType } from "../../schema/login.schema";
 import api from "../../config/axios.interceptor";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useApp } from "../../context/Context";
 import ErrorMessage from "../errors/ErrorMessage";
+import { useRef } from "react";
 
 const LoginCompo = () => {
+  const navigate = useNavigate();
+  const PopupRef = useRef<HTMLDivElement>(null);
   const {
     backendErrorPopup,
     setBackendErrorPopup,
@@ -28,8 +31,8 @@ const LoginCompo = () => {
         role: data.role,
       });
       if (response.status === 200) {
-        redirect("/");
         reset();
+        navigate("/");
       } else {
         throw new Error("");
       }
@@ -43,7 +46,13 @@ const LoginCompo = () => {
     }
   };
 
-  if (backendErrorPopup) return <ErrorMessage error={backendErrorMessage} />;
+  if (backendErrorPopup)
+    return (
+      <ErrorMessage
+        onClose={() => setBackendErrorPopup(false)}
+        error={backendErrorMessage}
+      />
+    );
 
   return (
     <div
