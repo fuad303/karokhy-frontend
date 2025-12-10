@@ -10,14 +10,13 @@ const LoginCompo = () => {
   } = useForm<LoginFormType>();
 
   const onSubmit = async (data: LoginFormType) => {
-    console.log(data);
     try {
-      const response = await api.post("/login", {
+      const res = await api.post("/login", {
         username: data.username,
         password: data.password,
         role: data.role,
       });
-      console.log("Login successfully ", response.data);
+      sessionStorage.setItem("token", res.data.token);
     } catch (error) {
       console.log("login error ", error);
     }
