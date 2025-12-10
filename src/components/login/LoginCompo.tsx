@@ -5,7 +5,6 @@ import api from "../../config/axios.interceptor";
 const LoginCompo = () => {
   const {
     register,
-
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormType>();
