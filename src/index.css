@@ -10,10 +10,18 @@
 
 @theme {
   /* ---------- Colors ---------- */
-  --color-primary: #1a73e8;
-  --color-secondary: #ff9800;
+  --color-primary: #0070f3;
+  --color-secondary: #eaedf2;
 
-  /* --color-brand-50: #f4f7ff; */
+  --color-bg: #f9fafb;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+
+  --color-text-muted: #6b7280;
+
+  --color-success: #22c55e;
+  --color-warning: #eab308;
+  --color-danger: #ef4444;
 
   /* ---------- Fonts ---------- */
   --font-yekanbakh: 'YekanBakh', sans-serif;
@@ -31,3 +39,4 @@
     @apply font-yekanbakh;
   }
 }
+

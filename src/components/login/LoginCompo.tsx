@@ -1,25 +1,25 @@
-import { useForm } from "react-hook-form";
-import type { LoginFormType } from "../../schema/login.schema";
-import api from "../../config/axios.interceptor";
+import { useForm } from 'react-hook-form';
+import type { LoginFormType } from '../../schema/login.schema';
+import api from '../../config/axios.interceptor';
 
 const LoginCompo = () => {
   const {
     register,
-
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormType>();
 
   const onSubmit = async (data: LoginFormType) => {
     try {
-      const res = await api.post("/login", {
+      const res = await api.post('/login', {
         username: data.username,
         password: data.password,
         role: data.role,
       });
-      sessionStorage.setItem("token", res.data.token);
+      sessionStorage.setItem('token', res.data.token);
+      console.log(res);
     } catch (error) {
-      console.log("login error ", error);
+      console.log('login error ', error);
     }
   };
 
@@ -52,7 +52,7 @@ const LoginCompo = () => {
               <input
                 id="username"
                 type="text"
-                {...register("username", { required: "نام کاربری ضروری است" })}
+                {...register('username', { required: 'نام کاربری ضروری است' })}
                 required
                 autoComplete="username"
                 className="block w-full rounded-md bg-white px-3 py-2 text-base text-black border border-gray-300 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none sm:text-sm"
@@ -76,7 +76,7 @@ const LoginCompo = () => {
               <input
                 id="password"
                 type="password"
-                {...register("password", { required: "رمز ورود ضروری است" })}
+                {...register('password', { required: 'رمز ورود ضروری است' })}
                 required
                 autoComplete="current-password"
                 className="block w-full rounded-md bg-white px-3 py-2 text-base text-black border border-gray-300 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none sm:text-sm"
@@ -95,7 +95,7 @@ const LoginCompo = () => {
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  {...register("role", { required: "انتخاب نقش ضروری است " })}
+                  {...register('role', { required: 'انتخاب نقش ضروری است ' })}
                   value="ADMIN"
                   className="accent-indigo-600"
                 />
@@ -104,7 +104,7 @@ const LoginCompo = () => {
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  {...register("role", { required: "انتخاب نقش ضروری است" })}
+                  {...register('role', { required: 'انتخاب نقش ضروری است' })}
                   value="SHAREHOLDER"
                   className="accent-green-600"
                 />
@@ -113,7 +113,7 @@ const LoginCompo = () => {
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  {...register("role", { required: "انتخاب نقش ضروری است " })}
+                  {...register('role', { required: 'انتخاب نقش ضروری است ' })}
                   value="ACCOUNTANT"
                   className="accent-yellow-600"
                 />
