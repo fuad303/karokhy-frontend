@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
-import type { LoginFormType } from "../../schema/login.schema";
+import { loginSchema, type LoginFormType } from "../../schema/login.schema";
 import api from "../../config/axios.interceptor";
 import type { AxiosError } from "axios";
 import { useApp } from "../../context/Context";
 import ErrorMessage from "../errors/ErrorMessage";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const LoginCompo = () => {
   const {
@@ -18,7 +19,12 @@ const LoginCompo = () => {
     reset,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginFormType>();
+  } = useForm<LoginFormType>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      role: "",
+    },
+  });
 
   const onSubmit = async (data: LoginFormType) => {
     try {
@@ -137,43 +143,43 @@ const LoginCompo = () => {
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  {...register("role", { required: "انتخاب نقش ضروری است" })}
+                  {...register("role")}
                   value="ADMIN"
-                  className="accent-indigo-600"
+                  className="text-primary"
                 />
                 <span>مدیر</span>
               </label>
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  {...register("role", { required: "انتخاب نقش ضروری است" })}
+                  {...register("role")}
                   value="SHAREHOLDER"
-                  className="accent-green-600"
+                  className="text-primary"
                 />
                 <span>شریک</span>
               </label>
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  {...register("role", { required: "انتخاب نقش ضروری است" })}
+                  {...register("role")}
                   value="ACCOUNTANT"
-                  className="accent-yellow-600"
+                  className="text-primary"
                 />
                 <span>حسابدار</span>
               </label>
-              {errors.role && (
-                <p className="mt-2 text-sm text-red-600" role="alert">
-                  {errors.role?.message}
-                </p>
-              )}
             </div>
+            {errors.role && (
+              <p className="mt-2 text-sm text-red-600" role="alert">
+                {errors.role?.message}
+              </p>
+            )}
           </div>
 
           <div>
             <button
               disabled={isSubmitting}
               type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               ورود
             </button>
