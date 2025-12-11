@@ -1,14 +1,11 @@
 import { useForm } from "react-hook-form";
 import type { LoginFormType } from "../../schema/login.schema";
 import api from "../../config/axios.interceptor";
-import { useNavigate } from "react-router-dom";
+import type { AxiosError } from "axios";
 import { useApp } from "../../context/Context";
 import ErrorMessage from "../errors/ErrorMessage";
-import { useRef } from "react";
 
 const LoginCompo = () => {
-  const navigate = useNavigate();
-  const PopupRef = useRef<HTMLDivElement>(null);
   const {
     backendErrorPopup,
     setBackendErrorPopup,
@@ -30,38 +27,52 @@ const LoginCompo = () => {
         password: data.password,
         role: data.role,
       });
+
       if (response.status === 200) {
         reset();
-        navigate("/");
+        window.location.href = "/";
+        console.log("successfull");
       } else {
-        throw new Error("");
+        setBackendErrorMessage("خطا در ورود");
+        setBackendErrorPopup(true);
       }
-    } catch (error: any) {
-      const msg =
-        error?.response?.data?.message || // message from server
-        error?.message || // axios or JS error message
-        "مشکلی رخ داد";
+    } catch (error: unknown) {
+      let msg = "مشکلی رخ داد";
+      // checking the axios error type
+      if (error && (error as AxiosError).isAxiosError) {
+        const axiosError = error as AxiosError;
+
+        if (axiosError.response) {
+          // when server response 400 or 500
+          msg = axiosError.response.data?.message || msg;
+        } else if (axiosError.request) {
+          // while sending request no comeback any response , network error
+          msg = "مشکل در اتصال به سرور";
+        } else {
+          // any Jsx Error
+          msg = axiosError.message || msg;
+        }
+      }
+
       setBackendErrorMessage(msg);
       setBackendErrorPopup(true);
     }
   };
-
-  if (backendErrorPopup)
-    return (
-      <ErrorMessage
-        onClose={() => setBackendErrorPopup(false)}
-        error={backendErrorMessage}
-      />
-    );
 
   return (
     <div
       className="min-h-screen flex items-center justify-center relative bg-blue-300"
       dir="rtl"
     >
+      {backendErrorPopup && (
+        <ErrorMessage
+          onClose={() => setBackendErrorPopup(false)}
+          error={backendErrorMessage}
+        />
+      )}
       <div className="absolute inset-0 bg-blue-100 bg-opacity-70 backdrop-blur-md"></div>
 
-      <div className="relative flex flex-col justify-center px-6  py-6 sm:py-12 my-10 sm:my-0  sm:w-full sm:max-w-sm bg-white border border-gray-300 rounded-lg shadow-md">
+      <div className="relative flex flex-col justify-center px-6 py-6 sm:py-12 my-10 sm:my-0 sm:w-full sm:max-w-sm bg-white border border-gray-300 rounded-lg shadow-md">
         <h2 className="mt-0 text-center text-2xl font-bold tracking-tight text-black">
           ورود
         </h2>
@@ -126,7 +137,7 @@ const LoginCompo = () => {
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  {...register("role", { required: "انتخاب نقش ضروری است " })}
+                  {...register("role", { required: "انتخاب نقش ضروری است" })}
                   value="ADMIN"
                   className="accent-indigo-600"
                 />
@@ -144,7 +155,7 @@ const LoginCompo = () => {
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  {...register("role", { required: "انتخاب نقش ضروری است " })}
+                  {...register("role", { required: "انتخاب نقش ضروری است" })}
                   value="ACCOUNTANT"
                   className="accent-yellow-600"
                 />
