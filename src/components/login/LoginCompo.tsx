@@ -1,22 +1,10 @@
-import { useForm } from "react-hook-form";
-import { loginSchema, type LoginFormType } from "../../schema/login.schema";
-import api from "../../config/axios.interceptor";
-import type { AxiosError } from "axios";
-import { useApp } from "../../context/Context";
-import ErrorMessage from "../errors/ErrorMessage";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
+import type { LoginFormType } from '../../schema/login.schema';
+import api from '../../config/axios.interceptor';
 
 const LoginCompo = () => {
   const {
-    backendErrorPopup,
-    setBackendErrorPopup,
-    setBackendErrorMessage,
-    backendErrorMessage,
-  } = useApp();
-
-  const {
     register,
-    reset,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormType>({
@@ -28,40 +16,15 @@ const LoginCompo = () => {
 
   const onSubmit = async (data: LoginFormType) => {
     try {
-      const response = await api.post("/login", {
+      const res = await api.post('/login', {
         username: data.username,
         password: data.password,
         role: data.role,
       });
-
-      if (response.status === 200) {
-        reset();
-        window.location.href = "/";
-        console.log("successfull");
-      } else {
-        setBackendErrorMessage("خطا در ورود");
-        setBackendErrorPopup(true);
-      }
-    } catch (error: unknown) {
-      let msg = "مشکلی رخ داد";
-      // checking the axios error type
-      if (error && (error as AxiosError).isAxiosError) {
-        const axiosError = error as AxiosError;
-
-        if (axiosError.response) {
-          // when server response 400 or 500
-          msg = axiosError.response.data?.message || msg;
-        } else if (axiosError.request) {
-          // while sending request no comeback any response , network error
-          msg = "مشکل در اتصال به سرور";
-        } else {
-          // any Jsx Error
-          msg = axiosError.message || msg;
-        }
-      }
-
-      setBackendErrorMessage(msg);
-      setBackendErrorPopup(true);
+      sessionStorage.setItem('token', res.data.token);
+      console.log(res);
+    } catch (error) {
+      console.log('login error ', error);
     }
   };
 
@@ -100,7 +63,7 @@ const LoginCompo = () => {
               <input
                 id="username"
                 type="text"
-                {...register("username", { required: "نام کاربری ضروری است" })}
+                {...register('username', { required: 'نام کاربری ضروری است' })}
                 required
                 autoComplete="username"
                 className="block w-full rounded-md bg-white px-3 py-2 text-base text-black border border-gray-300 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none sm:text-sm"
@@ -124,7 +87,7 @@ const LoginCompo = () => {
               <input
                 id="password"
                 type="password"
-                {...register("password", { required: "رمز ورود ضروری است" })}
+                {...register('password', { required: 'رمز ورود ضروری است' })}
                 required
                 autoComplete="current-password"
                 className="block w-full rounded-md bg-white px-3 py-2 text-base text-black border border-gray-300 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none sm:text-sm"
@@ -143,7 +106,7 @@ const LoginCompo = () => {
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  {...register("role")}
+                  {...register('role', { required: 'انتخاب نقش ضروری است ' })}
                   value="ADMIN"
                   className="text-primary"
                 />
@@ -152,7 +115,7 @@ const LoginCompo = () => {
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  {...register("role")}
+                  {...register('role', { required: 'انتخاب نقش ضروری است' })}
                   value="SHAREHOLDER"
                   className="text-primary"
                 />
@@ -161,7 +124,7 @@ const LoginCompo = () => {
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  {...register("role")}
+                  {...register('role', { required: 'انتخاب نقش ضروری است ' })}
                   value="ACCOUNTANT"
                   className="text-primary"
                 />
