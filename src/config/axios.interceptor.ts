@@ -7,6 +7,10 @@ const api = axios.create({
 // REQUEST INTERCEPTOR
 api.interceptors.request.use(
   (config) => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => Promise.reject(error)
@@ -19,11 +23,7 @@ api.interceptors.response.use(
     if (error.response.status === 401) {
       window.location.href = "/login";
     }
-    if (error.response.status === 403) {
-      console.log(
-        "Use the custom model to tell the user they don't have access to this part"
-      );
-    }
+
     return Promise.reject(error);
   }
 );

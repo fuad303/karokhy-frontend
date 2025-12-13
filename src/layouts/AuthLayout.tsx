@@ -2,12 +2,11 @@ import { Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
   return (
-    <div>
-      auth layout
-      <main>
+    <>
+      <main className="select-none">
         <Outlet />
       </main>
-    </div>
+    </>
   );
 };
 
