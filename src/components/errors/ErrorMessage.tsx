@@ -1,13 +1,9 @@
 import type React from "react";
 import { useEffect, useRef } from "react";
+import { useApp } from "../../context/Context";
 
-const ErrorMessage = ({
-  error,
-  onClose,
-}: {
-  error: string;
-  onClose: () => void;
-}) => {
+const ErrorMessageCompo = ({ onClose }: { onClose: () => void }) => {
+  const { backendErrorMessage } = useApp();
   useEffect(() => {
     const handlEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -26,7 +22,7 @@ const ErrorMessage = ({
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-blue-100/40 backdrop-blur-lg z-50"
+      className="fixed inset-0 flex items-center justify-center backdrop-blur-xl z-50"
       onClick={handleClickoutSide}
     >
       <div
@@ -34,7 +30,7 @@ const ErrorMessage = ({
         className="bg-white p-6 rounded-lg shadow-md text-center max-w-sm w-full"
       >
         <h2 className="text-xl font-bold text-red-600">خطا</h2>
-        <p className="mt-4 text-gray-700">{error}</p>
+        <p className="mt-4 text-gray-700">{backendErrorMessage}</p>
 
         <button
           onClick={onClose}
@@ -47,4 +43,4 @@ const ErrorMessage = ({
   );
 };
 
-export default ErrorMessage;
+export default ErrorMessageCompo;

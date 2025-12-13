@@ -1,8 +1,16 @@
-import { useForm } from 'react-hook-form';
-import type { LoginFormType } from '../../schema/login.schema';
-import api from '../../config/axios.interceptor';
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { loginSchema, type LoginFormType } from "../../schema/login.schema";
+import api from "../../config/axios.interceptor";
+import { useApp } from "../../context/Context";
+import { zodResolver } from "@hookform/resolvers/zod";
+import ErrorMessageCompo from "../errors/ErrorMessage";
+import Loading from "../Loading";
+import MountainBackground from "../MountainBg";
 
 const LoginCompo = () => {
+  const { backendErrorPopup, setBackendErrorMessage, setBackendErrorPopup } =
+    useApp();
   const {
     register,
     handleSubmit,
@@ -16,137 +24,129 @@ const LoginCompo = () => {
 
   const onSubmit = async (data: LoginFormType) => {
     try {
-      const res = await api.post('/login', {
+      const res = await api.post("/login", {
         username: data.username,
         password: data.password,
         role: data.role,
       });
-      sessionStorage.setItem('token', res.data.token);
-      console.log(res);
-    } catch (error) {
-      console.log('login error ', error);
+      sessionStorage.setItem("token", res.data.token);
+      window.location.href = "/";
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setBackendErrorMessage(error.response?.data?.message ?? "مشکلی رخ داد");
+      } else {
+        setBackendErrorMessage("مشکلی رخ داد");
+      }
+      setBackendErrorPopup(true);
     }
   };
 
+  if (isSubmitting) return <Loading />;
+
   return (
     <div
-      className="min-h-screen flex items-center justify-center relative bg-blue-300"
+      className=" flex items-center justify-center relative bg-cover bg-center min-h-screen"
       dir="rtl"
     >
-      {backendErrorPopup && (
-        <ErrorMessage
-          onClose={() => setBackendErrorPopup(false)}
-          error={backendErrorMessage}
-        />
-      )}
-      <div className="absolute inset-0 bg-blue-100 bg-opacity-70 backdrop-blur-md"></div>
+      <MountainBackground />
+      {/* Dark overlay - REMOVED backdrop-blur-sm */}
+      <div className="absolute inset-0 bg-black/60"></div>
 
-      <div className="relative flex flex-col justify-center px-6 py-6 sm:py-12 my-10 sm:my-0 sm:w-full sm:max-w-sm bg-white border border-gray-300 rounded-lg shadow-md">
-        <h2 className="mt-0 text-center text-2xl font-bold tracking-tight text-black">
-          ورود
+      {/* Error popup */}
+      {backendErrorPopup && (
+        <ErrorMessageCompo onClose={() => setBackendErrorPopup(false)} />
+      )}
+
+      {/* Login Card - REMOVED backdrop-blur-md, increased opacity */}
+      <div className="relative z-10 w-full max-w-md p-10 bg-white/85 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200">
+        <h2 className="text-3xl font-extrabold text-center text-gray-600 mb-8">
+          ورود به سیستم
         </h2>
 
-        <form
-          action="#"
-          onSubmit={handleSubmit(onSubmit)}
-          method="POST"
-          className="mt-6 space-y-6"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Username */}
           <div>
             <label
               htmlFor="username"
-              className="block text-sm font-medium text-black text-right"
+              className="block text-sm font-medium text-gray-800 text-right"
             >
               نام کاربری
             </label>
-            <div className="mt-2">
-              <input
-                id="username"
-                type="text"
-                {...register('username', { required: 'نام کاربری ضروری است' })}
-                required
-                autoComplete="username"
-                className="block w-full rounded-md bg-white px-3 py-2 text-base text-black border border-gray-300 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none sm:text-sm"
-              />
-            </div>
+            <input
+              id="username"
+              type="text"
+              {...register("username", { required: "نام کاربری ضروری است" })}
+              required
+              autoComplete="username"
+              className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 placeholder-gray-400"
+            />
             {errors.username && (
-              <p className="mt-2 text-sm text-red-600" role="alert">
+              <p className="mt-1 text-sm text-red-600">
                 {errors.username?.message}
               </p>
             )}
           </div>
 
+          {/* Password */}
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-black text-right"
+              className="block text-sm font-medium text-gray-800 text-right"
             >
-              رمز ورود
+              رمز عبور
             </label>
-            <div className="mt-2">
-              <input
-                id="password"
-                type="password"
-                {...register('password', { required: 'رمز ورود ضروری است' })}
-                required
-                autoComplete="current-password"
-                className="block w-full rounded-md bg-white px-3 py-2 text-base text-black border border-gray-300 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none sm:text-sm"
-              />
-            </div>
+            <input
+              id="password"
+              type="password"
+              {...register("password", { required: "رمز ورود ضروری است" })}
+              required
+              autoComplete="current-password"
+              className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 placeholder-gray-400"
+            />
             {errors.password && (
-              <p className="mt-2 text-sm text-red-600" role="alert">
+              <p className="mt-1 text-sm text-red-600">
                 {errors.password?.message}
               </p>
             )}
           </div>
 
-          <div className="mt-4">
-            <span className="text-sm font-medium text-black">نقش:</span>
-            <div className="flex gap-4 mt-2">
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  {...register('role', { required: 'انتخاب نقش ضروری است ' })}
-                  value="ADMIN"
-                  className="text-primary"
-                />
-                <span>مدیر</span>
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  {...register('role', { required: 'انتخاب نقش ضروری است' })}
-                  value="SHAREHOLDER"
-                  className="text-primary"
-                />
-                <span>شریک</span>
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  {...register('role', { required: 'انتخاب نقش ضروری است ' })}
-                  value="ACCOUNTANT"
-                  className="text-primary"
-                />
-                <span>حسابدار</span>
-              </label>
+          {/* Role */}
+          <div>
+            <span className="block text-sm font-medium text-gray-800">نقش</span>
+            <div className="flex justify-between mt-2">
+              {["ADMIN", "SHAREHOLDER", "ACCOUNTANT"].map((role) => (
+                <label key={role} className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    {...register("role", { required: "انتخاب نقش ضروری است" })}
+                    value={role}
+                    className="text-blue-600"
+                  />
+                  <span className="text-gray-900">
+                    {role === "ADMIN"
+                      ? "مدیر"
+                      : role === "SHAREHOLDER"
+                      ? "شریک"
+                      : "حسابدار"}
+                  </span>
+                </label>
+              ))}
             </div>
             {errors.role && (
-              <p className="mt-2 text-sm text-red-600" role="alert">
+              <p className="mt-1 text-sm text-red-600">
                 {errors.role?.message}
               </p>
             )}
           </div>
 
-          <div>
-            <button
-              disabled={isSubmitting}
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            >
-              ورود
-            </button>
-          </div>
+          {/* Submit */}
+          <button
+            disabled={isSubmitting}
+            type="submit"
+            className="w-full py-3 mt-4 bg-linear-to-r from-blue-500 to-indigo-500 text-white font-bold rounded-2xl shadow-lg hover:from-blue-600 hover:to-indigo-600 transition-all"
+          >
+            ورود
+          </button>
         </form>
       </div>
     </div>

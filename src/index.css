@@ -1,11 +1,16 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 /* ----------------- Custom Font ----------------- */
 @font-face {
-  font-family: 'YekanBakh';
-  src: url('/fonts/YekanBakh-Regular.ttf') format('truetype');
+  font-family: "YekanBakh";
+  src: url("/fonts/YekanBakh-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
+}
+@media (prefers-reduced-motion: reduce) {
+  svg animate {
+    display: none;
+  }
 }
 
 @theme {
@@ -24,7 +29,7 @@
   --color-danger: #ef4444;
 
   /* ---------- Fonts ---------- */
-  --font-yekanbakh: 'YekanBakh', sans-serif;
+  --font-yekanbakh: "YekanBakh", sans-serif;
 
   /* ---------- Font Sizes ---------- */
   --text-h1: 2.5rem;
@@ -39,4 +44,3 @@
     @apply font-yekanbakh;
   }
 }
-

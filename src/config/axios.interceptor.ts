@@ -23,11 +23,7 @@ api.interceptors.response.use(
     if (error.response.status === 401) {
       window.location.href = "/login";
     }
-    if (error.response.status === 403) {
-      console.log(
-        "Use the custom model to tell the user they don't have access to this part"
-      );
-    }
+
     return Promise.reject(error);
   }
 );
