@@ -1,19 +1,23 @@
 /* eslint-disable react-refresh/only-export-components */
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from 'react';
 
 interface AppContextInterface {
   backendErrorPopup: boolean;
   setBackendErrorPopup: React.Dispatch<React.SetStateAction<boolean>>;
   backendErrorMessage: string;
   setBackendErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  openSidebar: boolean;
+  setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AppContext = createContext<AppContextInterface | null>(null);
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [backendErrorPopup, setBackendErrorPopup] = useState(false);
-  const [backendErrorMessage, setBackendErrorMessage] = useState("");
+  const [backendErrorMessage, setBackendErrorMessage] = useState('');
+
+  const [openSidebar, setOpenSidebar] = useState(false);
 
   return (
     <AppContext.Provider
@@ -22,6 +26,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         setBackendErrorPopup,
         backendErrorMessage,
         setBackendErrorMessage,
+        openSidebar,
+        setOpenSidebar,
       }}
     >
       {children}
@@ -31,6 +37,6 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useApp = () => {
   const ctx = useContext(AppContext);
-  if (!ctx) throw new Error("useApp must be used inside AppProvider");
+  if (!ctx) throw new Error('useApp must be used inside AppProvider');
   return ctx;
 };
