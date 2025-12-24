@@ -1,4 +1,4 @@
-import type { ErrorType } from '../interfaces/error.interface';
+import type { ErrorType } from "../interfaces/error.interface";
 
 type ErrorListener = (event: ErrorType) => void;
 
