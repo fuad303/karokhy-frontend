@@ -8,7 +8,7 @@ class EventNotifier {
   subscribe(listener: ErrorListener) {
     this.listeners.add(listener);
     return () => {
-      this.listeners.delete(listener); // ✅ no return value
+      this.listeners.delete(listener); 
     };
   }
 
