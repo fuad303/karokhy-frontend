@@ -6,8 +6,10 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "../../config/axios.interceptor";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function AddUserForm() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -22,12 +24,13 @@ function AddUserForm() {
 
   const onSubmit = async (data: AdminNewUserType) => {
     try {
-      const res = await api.post("/api/admin/new-user", {
+      await api.post("/api/admin/new-user", {
         username: data.username,
         password: data.password,
         phone: data.phone,
         role: data.role,
       });
+      navigate("/");
       reset();
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

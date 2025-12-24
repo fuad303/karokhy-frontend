@@ -17,6 +17,8 @@ export class Loader {
         users: res.data as UserInterface[],
       };
     } catch (error) {
+      console.log(error);
+
       throw new Response("Failed to load users", { status: 500 });
     }
   }

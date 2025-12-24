@@ -2,15 +2,18 @@ import { useState } from "react";
 import api from "../../config/axios.interceptor";
 import axios from "axios";
 import type { UserInterface } from "../../interfaces/Adminmanage.interface";
+import { useNavigate } from "react-router-dom";
 
 function AdminUserList() {
   const [users, setUsers] = useState<UserInterface[]>([]);
   const [editingUser, setEditingUser] = useState<UserInterface | null>(null);
+  const navigate = useNavigate();
 
   const deleteUser = async (id: string) => {
     try {
       await api.delete(`/user/${id}`);
       setUsers((prev) => prev.filter((u) => u.id !== id));
+      navigate("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data?.message ?? "مشکلی رخ داد");
@@ -21,7 +24,7 @@ function AdminUserList() {
   const handleUpdate = async () => {
     if (!editingUser) return;
     try {
-      const res = await api.put(`/user/${editingUser.id}`, {
+      await api.put(`/user/${editingUser.id}`, {
         username: editingUser.username,
         role: editingUser.role,
         phone: editingUser.phone,
@@ -30,8 +33,9 @@ function AdminUserList() {
         prev.map((u) => (u.id === editingUser.id ? editingUser : u))
       );
       setEditingUser(null);
+      navigate("/");
     } catch (error) {
-      console.log("خطا در ویرایش کاربری");
+      console.log("خطا در ویرایش کاربری", error);
     }
   };
 
