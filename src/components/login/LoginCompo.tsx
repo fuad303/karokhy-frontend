@@ -12,7 +12,6 @@ const LoginCompo = () => {
   const { backendErrorPopup, setBackendErrorMessage, setBackendErrorPopup } =
     useApp();
 
-    
   const {
     register,
     handleSubmit,

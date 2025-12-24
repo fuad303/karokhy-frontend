@@ -1,16 +1,16 @@
-import { CircleUser, Menu, Search } from 'lucide-react';
-import { useApp } from '../../context/Context';
-import { useNavigate } from 'react-router-dom';
-import logo from '../../assets/logo.jpg';
+import { CircleUser, Menu, Search } from "lucide-react";
+import { useApp } from "../../context/Context";
+import { useNavigate } from "react-router-dom";
+import logo from "../../assets/logo.jpg";
 
 export default function Header() {
   const { openSidebar, setOpenSidebar } = useApp();
   const navigate = useNavigate();
 
   function handleLogoOut() {
-    sessionStorage.removeItem('token');
+    sessionStorage.removeItem("token");
 
-    navigate('/login', { replace: true });
+    navigate("/login", { replace: true });
   }
 
   return (
@@ -21,7 +21,7 @@ export default function Header() {
             <Menu />
           </button>
         ) : (
-          ''
+          ""
         )}
 
         {openSidebar && (

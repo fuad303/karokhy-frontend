@@ -8,8 +8,8 @@ import { StrictMode } from "react";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-  <AppProvider>
-    <RouterProvider router={router} />
-  </AppProvider>
+    <AppProvider>
+      <RouterProvider router={router} />
+    </AppProvider>
   </StrictMode>
 );

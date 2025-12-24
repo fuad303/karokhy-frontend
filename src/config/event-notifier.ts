@@ -1,4 +1,4 @@
-import type { ErrorType } from '../interfaces/error.interface';
+import type { ErrorType } from "../interfaces/error.interface";
 
 type ErrorListener = (event: ErrorType) => void;
 
@@ -8,7 +8,7 @@ class EventNotifier {
   subscribe(listener: ErrorListener) {
     this.listeners.add(listener);
     return () => {
-      this.listeners.delete(listener); // ✅ no return value
+      this.listeners.delete(listener); 
     };
   }
 

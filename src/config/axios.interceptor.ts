@@ -1,5 +1,5 @@
-import axios, { AxiosError } from 'axios';
-import { errorNotifier } from './event-notifier';
+import axios, { AxiosError } from "axios";
+import { errorNotifier } from "./event-notifier";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
@@ -8,9 +8,9 @@ const api = axios.create({
 // REQUEST INTERCEPTOR
 api.interceptors.request.use(
   (config) => {
-    const token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem("token");
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
@@ -24,7 +24,7 @@ api.interceptors.response.use(
     if (!error.response) {
       errorNotifier.publish({
         statusCode: 0,
-        message: 'Network error, server unreachable!',
+        message: "Network error, server unreachable!",
       });
 
       return Promise.reject(error);
@@ -33,20 +33,20 @@ api.interceptors.response.use(
     const status = error.response.status;
 
     if (status === 401) {
-      window.location.href = '/login';
+      window.location.href = "/login";
     }
 
     if (status === 404) {
       errorNotifier.publish({
         statusCode: 404,
-        message: 'Resouce not found do u understand.',
+        message: "Resouce not found do u understand.",
       });
     }
 
     if (status >= 500) {
       errorNotifier.publish({
         statusCode: 500,
-        message: 'Internal server error.',
+        message: "Internal server error.",
       });
     }
 
