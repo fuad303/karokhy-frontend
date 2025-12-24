@@ -1,6 +1,6 @@
-import { useEffect, useState, type JSX } from 'react';
-import { NavLink } from 'react-router-dom';
-import api from '../../config/axios.interceptor';
+import { useEffect, useState, type JSX } from "react";
+import { NavLink } from "react-router-dom";
+import api from "../../config/axios.interceptor";
 import {
   CornerDownLeft,
   DollarSign,
@@ -15,7 +15,7 @@ import {
   ShoppingCart,
   UserPlus,
   Users,
-} from 'lucide-react';
+} from "lucide-react";
 
 type MenuItem = {
   id: number;
@@ -46,8 +46,9 @@ export default function SideBar() {
 
   useEffect(() => {
     const fetchMenuItems = async () => {
-      const res = await api.get('/api/public/menu-items');
+      const res = await api.get("/api/public/menu-items");
       setMenuItems(res.data.menuItems);
+      console.log(res);
     };
     fetchMenuItems();
   }, []);
@@ -62,7 +63,7 @@ export default function SideBar() {
           <Menu size={24} />
         </button>
       ) : (
-        ''
+        ""
       )}
       {open && (
         <div
@@ -75,7 +76,7 @@ export default function SideBar() {
         className={`
           fixed top-0 right-0 h-full bg-white shadow-xl z-50 w-60 sm:w-70 
           transition-transform duration-300
-          ${open ? 'translate-x-0' : 'translate-x-full sm:translate-x-0'}
+          ${open ? "translate-x-0" : "translate-x-full sm:translate-x-0"}
         `}
       >
         <ul className="space-y-2 p-4">
@@ -92,8 +93,8 @@ export default function SideBar() {
                   `flex gap-2 py-2 px-4 text-xl
                   ${
                     isActive
-                      ? 'bg-primary text-white'
-                      : 'hover:bg-blue-50 hover:text-blue-500'
+                      ? "bg-primary text-white"
+                      : "hover:bg-blue-50 hover:text-blue-500"
                   }`
                 }
               >
