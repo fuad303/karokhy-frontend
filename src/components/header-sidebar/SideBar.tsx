@@ -46,7 +46,7 @@ export default function SideBar() {
 
   useEffect(() => {
     const fetchMenuItems = async () => {
-      const res = await api.get('/api/public/menu-items');
+      const res = await api.get('/api/public/menu-item');
       setMenuItems(res.data.menuItems);
     };
     fetchMenuItems();
@@ -61,17 +61,17 @@ export default function SideBar() {
         `}
     >
       <ul className="space-y-2 p-4">
-        <div className="flex flex-col items-center mb-5 font-bold text-xl">
-          پنل مدیر
+        <div className="flex flex-col items-center mb-10 font-bold text-xl text-gray-700">
+          پنل مدیریت
         </div>
 
         {menuItems.map((menu) => (
           <li key={menu.id}>
             <NavLink
               to={menu.link}
-              onClick={() => setOpenSidebar(false)} // auto close on click mobile
+              onClick={() => setOpenSidebar(false)}
               className={({ isActive }) =>
-                `flex gap-2 py-2 px-4 text-xl
+                `flex gap-2 py-2 px-4 text-xl rounded-[5px] text-gray-600
                   ${
                     isActive
                       ? 'bg-primary text-white'

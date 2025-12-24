@@ -1,8 +1,17 @@
-import { Menu, Search, User } from 'lucide-react';
+import { CircleUser, Menu, Search } from 'lucide-react';
 import { useApp } from '../../context/Context';
+import { useNavigate } from 'react-router-dom';
+import logo from '../../assets/logo.jpg';
 
 export default function Header() {
   const { openSidebar, setOpenSidebar } = useApp();
+  const navigate = useNavigate();
+
+  function handleLogoOut() {
+    sessionStorage.removeItem('token');
+
+    navigate('/login', { replace: true });
+  }
 
   return (
     <header className="h-16 bg-white shadow fixed right-0 left-0 top-0 sm:mr-70 z-30 flex items-center justify-between px-6">
@@ -21,9 +30,9 @@ export default function Header() {
             onClick={() => setOpenSidebar(false)}
           />
         )}
-        <h1 className="sm:text-lg font-semibold sm:text-gray-600  ">
-          آیدیا افغان
-        </h1>
+        <div className="w-12">
+          <img src={logo} alt="" />
+        </div>
       </div>
       <div dir="rtl" className="relative sm:w-full sm:max-w-md hidden sm:block">
         <Search
@@ -53,10 +62,13 @@ export default function Header() {
       </div>
 
       <div className="flex gap-5 items-center">
-        <button className=" border border-primary text-gray-500 px-3 py-2 text-sm rounded-[5px] cursor-pointer">
+        <button
+          onClick={handleLogoOut}
+          className="  border bg-primary text-white sm:px-3 sm:py-2 px-1 py-2 text-sm rounded-[5px] cursor-pointer"
+        >
           قفل سیستم
         </button>
-        <User className="text-gray-700" size={25} />
+        <CircleUser className="text-gray-500" size={35} />
       </div>
     </header>
   );

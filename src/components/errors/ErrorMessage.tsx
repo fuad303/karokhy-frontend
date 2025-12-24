@@ -1,19 +1,20 @@
-import type React from "react";
-import { useEffect, useRef } from "react";
-import { useApp } from "../../context/Context";
+import type React from 'react';
+import { useEffect, useRef } from 'react';
+import { useApp } from '../../context/Context';
 
 const ErrorMessageCompo = ({ onClose }: { onClose: () => void }) => {
   const { backendErrorMessage } = useApp();
+  const PopupRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handlEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === 'Escape') onClose();
     };
 
-    document.addEventListener("keydown", handlEsc);
-    return () => document.removeEventListener("keydown", handlEsc);
+    document.addEventListener('keydown', handlEsc);
+    return () => document.removeEventListener('keydown', handlEsc);
   }, [onClose]);
 
-  const PopupRef = useRef<HTMLDivElement>(null);
   const handleClickoutSide = (e: React.MouseEvent<HTMLDivElement>) => {
     if (PopupRef.current && !PopupRef.current.contains(e.target as Node)) {
       onClose();

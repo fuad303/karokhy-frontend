@@ -4,11 +4,12 @@ import "./index.css";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router/router";
 import { AppProvider } from "./context/Context";
+import { StrictMode } from "react";
 
 createRoot(document.getElementById("root")!).render(
-  // <StrictMode>
+  <StrictMode>
   <AppProvider>
     <RouterProvider router={router} />
   </AppProvider>
-  // </StrictMode>
+  </StrictMode>
 );
