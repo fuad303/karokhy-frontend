@@ -22,7 +22,6 @@ api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     if (error.response) {
-
       const status = error.response.status;
 
       if (status === 401) {
@@ -48,7 +47,7 @@ api.interceptors.response.use(
       console.log("There is no response");
 
       errorNotifier.publish({
-        statusCode: 500,
+        statusCode: 400,
         message: "مطمین شوید به انترنت متصل هستید",
       });
 

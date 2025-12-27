@@ -9,6 +9,7 @@ import {
   FileSpreadsheet,
   LayoutDashboard,
   Newspaper,
+  PackageSearch,
   Receipt,
   ShoppingBag,
   ShoppingCart,
@@ -42,6 +43,7 @@ export default function SideBar() {
     preSaleIcon: <FileSpreadsheet size={20} />,
     Droplets: <Droplets size={20} />,
     internationalIcon: <Earth size={20} />,
+    processIcon: <PackageSearch />
   };
 
   useEffect(() => {

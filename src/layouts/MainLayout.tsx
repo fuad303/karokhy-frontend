@@ -8,7 +8,7 @@ export default function MainLayout() {
       <SideBar />
       <div className="sm:mr-70 mr-0 min-h-screen">
         <Header />
-        <main className="pt-16 p-4 ">
+        <main className=" mt-20 flex felx-col justify-center p-4 mr-4 ml-4 ">
           <Outlet />
         </main>
       </div>
