@@ -7,9 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import api from "../../config/axios.interceptor";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function AddUserForm() {
   const navigate = useNavigate();
+  const [roleType, setRoleType] = useState<"SHAREHOLDER" | "ACCOUNTANT" | "">(
+    ""
+  );
   const {
     register,
     handleSubmit,
@@ -88,21 +92,61 @@ function AddUserForm() {
               <p className="text-red-500 text-sm">{errors.phone.message}</p>
             )}
           </div>
+
           <div>
-            <label className="block mb-1 font-medium">نقش</label>
-            <select
-              {...register("role")}
-              className="w-full border border-gray-300 outline-primary rounded-md p-2"
-            >
-              <option value="">انتخاب نقش</option>
-              <option value="SHAREHOLDER">شریک</option>
-              <option value="ACCOUNTANT_REGULAR">حسابدار عادی</option>
-              <option value="ACCOUNTANT_SUPER">حسابدار ارشد</option>
-            </select>
+            <label className="block mb-2 font-medium">نقش</label>
+
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  value="SHAREHOLDER"
+                  checked={roleType === "SHAREHOLDER"}
+                  onChange={() => {
+                    setRoleType("SHAREHOLDER");
+                  }}
+                />
+                شریک
+              </label>
+
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  value="ACCOUNTANT"
+                  checked={roleType === "ACCOUNTANT"}
+                  onChange={() => {
+                    setRoleType("ACCOUNTANT");
+                  }}
+                />
+                حسابدار
+              </label>
+            </div>
+
             {errors.role && (
               <p className="text-red-500 text-sm">{errors.role.message}</p>
             )}
+
+            {roleType === "SHAREHOLDER" && (
+              <input type="hidden" value="SHAREHOLDER" {...register("role")} />
+            )}
+            {roleType === "ACCOUNTANT" && (
+              <div>
+                <select
+                  {...register("role")}
+                  className="w-full border border-gray-300 outline-primary rounded-md p-2"
+                >
+                  <option value="">انتخاب نوع حسابدار</option>
+                  <option value="ACCOUNTANT_REGULAR">حسابدار عادی</option>
+                  <option value="ACCOUNTANT_SUPER">حسابدار ارشد</option>
+                </select>
+
+                {errors.role && (
+                  <p className="text-red-500 text-sm">{errors.role.message}</p>
+                )}
+              </div>
+            )}
           </div>
+
           <button
             type="submit"
             className="w-full bg-primary hover:bg-primary text-white py-2 rounded-md"
