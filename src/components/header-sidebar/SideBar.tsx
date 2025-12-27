@@ -8,6 +8,7 @@ import {
   Earth,
   FileSpreadsheet,
   LayoutDashboard,
+  Menu,
   Newspaper,
   Receipt,
   ShoppingBag,
@@ -15,6 +16,7 @@ import {
   UserPlus,
   Users,
 } from "lucide-react";
+import { useApp } from "../../context/Context";
 
 type MenuItem = {
   id: number;
@@ -57,17 +59,17 @@ export default function SideBar() {
       {!open ? (
         <button
           className="sm:hidden fixed top-4 right-4 z-60 bg-white shadow p-2 rounded"
-          onClick={() => setOpen(true)}
+          onClick={() => setOpenSidebar(true)}
         >
           <Menu size={24} />
         </button>
       ) : (
         ""
       )}
-      {open && (
+      {openSidebar && (
         <div
           className="fixed inset-0 bg-black/40 z-40 sm:hidden"
-          onClick={() => setOpen(false)}
+          onClick={() => setOpenSidebar(false)}
         />
       )}
 
@@ -77,32 +79,33 @@ export default function SideBar() {
           transition-transform duration-300
           ${open ? "translate-x-0" : "translate-x-full sm:translate-x-0"}
         `}
-    >
-      <ul className="space-y-2 p-4">
-        <div className="flex flex-col items-center mb-10 font-bold text-xl text-gray-700">
-          پنل مدیریت
-        </div>
+      >
+        <ul className="space-y-2 p-4">
+          <div className="flex flex-col items-center mb-10 font-bold text-xl text-gray-700">
+            پنل مدیریت
+          </div>
 
-        {menuItems.map((menu) => (
-          <li key={menu.id}>
-            <NavLink
-              to={menu.link}
-              onClick={() => setOpenSidebar(false)}
-              className={({ isActive }) =>
-                `flex gap-2 py-2 px-4 text-xl rounded-[5px] text-gray-600
+          {menuItems.map((menu) => (
+            <li key={menu.id}>
+              <NavLink
+                to={menu.link}
+                onClick={() => setOpenSidebar(false)}
+                className={({ isActive }) =>
+                  `flex gap-2 py-2 px-4 text-xl rounded-[5px] text-gray-600
                   ${
                     isActive
                       ? "bg-primary text-white"
                       : "hover:bg-blue-50 hover:text-blue-500"
                   }`
-              }
-            >
-              {iconMap[menu.icon]}
-              <span>{menu.label}</span>
-            </NavLink>
-          </li>
-        ))}
-      </ul>
-    </aside>
+                }
+              >
+                {iconMap[menu.icon]}
+                <span>{menu.label}</span>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    </>
   );
 }

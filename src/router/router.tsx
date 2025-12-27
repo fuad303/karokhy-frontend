@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Navigate to="list" replace />,
+            element: <Navigate to="/users/list" replace />,
           },
           {
             path: "add",
