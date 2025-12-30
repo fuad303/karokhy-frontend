@@ -77,7 +77,7 @@ export default function SideBar() {
         className={`
           fixed top-0 right-0 h-full bg-white shadow-xl z-50 w-60 sm:w-70 
           transition-transform duration-300
-          ${open ? "translate-x-0" : "translate-x-full sm:translate-x-0"}
+          ${openSidebar ? "translate-x-0" : "translate-x-full sm:translate-x-0"}
         `}
       >
         <ul className="space-y-2 p-4">

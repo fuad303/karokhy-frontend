@@ -1,6 +1,6 @@
-import type React from 'react';
-import { useEffect, useRef } from 'react';
-import { useApp } from '../../context/Context';
+import type React from "react";
+import { useEffect, useRef } from "react";
+import { useApp } from "../../context/Context";
 
 const ErrorMessageCompo = ({ onClose }: { onClose: () => void }) => {
   const { backendErrorMessage } = useApp();
@@ -8,11 +8,11 @@ const ErrorMessageCompo = ({ onClose }: { onClose: () => void }) => {
 
   useEffect(() => {
     const handlEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === "Escape") onClose();
     };
 
-    document.addEventListener('keydown', handlEsc);
-    return () => document.removeEventListener('keydown', handlEsc);
+    document.addEventListener("keydown", handlEsc);
+    return () => document.removeEventListener("keydown", handlEsc);
   }, [onClose]);
 
   const handleClickoutSide = (e: React.MouseEvent<HTMLDivElement>) => {

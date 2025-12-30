@@ -1,8 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 
-import { createContext, useContext, useEffect, useState } from 'react';
-import { errorNotifier } from '../config/event-notifier';
-import ErrorMessageCompo from '../components/errors/ErrorMessage';
+import { createContext, useContext, useEffect, useState } from "react";
+import { errorNotifier } from "../config/event-notifier";
+import ErrorMessageCompo from "../components/errors/ErrorMessage";
 
 interface AppContextInterface {
   backendErrorPopup: boolean;
@@ -18,7 +18,7 @@ const AppContext = createContext<AppContextInterface | null>(null);
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [backendErrorPopup, setBackendErrorPopup] = useState(false);
-  const [backendErrorMessage, setBackendErrorMessage] = useState('');
+  const [backendErrorMessage, setBackendErrorMessage] = useState("");
   const [backendErrorStatus, setBackendErrorStatus] = useState<
     number | undefined
   >();
@@ -41,12 +41,10 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     return unsubscribe; // 🚨 VERY IMPORTANT
   }, []);
 
-
-   const shouldBlockApp =
+  const shouldBlockApp =
     backendErrorPopup &&
     backendErrorStatus !== undefined &&
     backendErrorStatus !== 400;
-
 
   return (
     <AppContext.Provider
@@ -70,6 +68,6 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useApp = () => {
   const ctx = useContext(AppContext);
-  if (!ctx) throw new Error('useApp must be used inside AppProvider');
+  if (!ctx) throw new Error("useApp must be used inside AppProvider");
   return ctx;
 };
