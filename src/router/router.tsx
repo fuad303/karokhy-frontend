@@ -5,12 +5,18 @@ import Login from "../pages/Login";
 import AuthLayout from "../layouts/AuthLayout";
 import { Loader } from "../loader/loader";
 import NotFound from "../pages/NotFound";
+import AdminPage from "../pages/AdminPage";
 
 export const router = createBrowserRouter([
   {
     element: <MainLayout />,
     children: [
       { path: "/", element: <Home />, loader: Loader.dashboardLoader },
+      {
+        path: "/users",
+        element: <AdminPage />,
+        loader: Loader.dashboardLoader,
+      },
       { path: "/*", element: <NotFound /> },
     ],
   },
