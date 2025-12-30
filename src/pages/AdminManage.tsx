@@ -1,99 +1,44 @@
-// import { Suspense, useState } from "react";
-// import Loading from "../components/Loading";
-// import { Outlet, useNavigate } from "react-router-dom";
-// // import AddUserForm from "../components/admin-form/AddUserForm";
-// // import AdminUserList from "../components/admin-form/AdminUserList";
-
-// // const AddUserForm = lazy(() => import("../components/admin-form/AddUserForm"));
-// // const AdminUserList = lazy(
-// //   () => import("../components/admin-form/AdminUserList")
-// // );
-// function AdminManage() {
-//   const [page, setPage] = useState<"list" | "add">("list");
-//   const navigate = useNavigate();
-//   return (
-//     <div>
-//       <div className="max-w-4xl  mx-auto mt-10">
-//         <div className="gap-4 mb-6 flex justify-center">
-//           <button
-//             className={`px-4 py-2 rounded-md  ${
-//               page === "add"
-//                 ? "bg-secondary text-black outline-2 outline-primary  "
-//                 : "bg-secondary"
-//             }`}
-//             onClick={() => {
-//               // setPage("add");
-//               navigate("/users/add");
-//             }}
-//           >
-//             اضافه کردن کاربر
-//           </button>
-
-//           <button
-//             className={`px-4 py-2 rounded-md  ${
-//               page === "list"
-//                 ? "bg-secondary text-black outline-2 outline-primary "
-//                 : "bg-secondary"
-//             }`}
-//             onClick={() => {
-//               // setPage("list");
-//               navigate("/users/list");
-//             }}
-//           >
-//             لیست کاربران
-//           </button>
-//         </div>
-//         <Suspense fallback={<Loading />}>
-//           {/* {page === "add" && <AddUserForm />}
-//           {page === "list" && <AdminUserList />} */}
-//           <Outlet />
-//         </Suspense>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default AdminManage;
-
-import { Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import Loading from "../components/Loading";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+
+const adminSections = {
+  list: {
+    label: "لیست کاربران",
+    component: lazy(() => import("../components/admin-form/AdminUserList")),
+  },
+  add: {
+    label: "اضافه کردن کاربر",
+    component: lazy(() => import("../components/admin-form/AddUserForm")),
+  },
+};
+
+type AdminSectionKey = keyof typeof adminSections;
 
 function AdminManage() {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [activeSection, setActiveSection] = useState<AdminSectionKey>("list");
 
-  // Determine which page is active based on the URL
-  const page = location.pathname.includes("/add") ? "add" : "list";
+  const ActiveComponent = adminSections[activeSection].component;
 
   return (
     <div className="max-w-4xl mx-auto mt-10">
-      <div className="gap-4 mb-6 flex justify-center">
-        <button
-          className={`px-4 py-2 rounded-md ${
-            page === "add"
-              ? "bg-secondary text-black outline-2 outline-primary"
-              : "bg-secondary"
-          }`}
-          onClick={() => navigate("/users/add")}
-        >
-          اضافه کردن کاربر
-        </button>
-
-        <button
-          className={`px-4 py-2 rounded-md ${
-            page === "list"
-              ? "bg-secondary text-black outline-2 outline-primary"
-              : "bg-secondary"
-          }`}
-          onClick={() => navigate("/users/list")}
-        >
-          لیست کاربران
-        </button>
+      <div className="flex gap-4 mb-6 justify-center">
+        {Object.entries(adminSections).map(([key, section]) => (
+          <button
+            key={key}
+            onClick={() => setActiveSection(key as AdminSectionKey)}
+            className={`px-4 py-2 rounded-md ${
+              activeSection === key
+                ? "bg-secondary text-black outline outline-primary"
+                : "bg-secondary"
+            }`}
+          >
+            {section.label}
+          </button>
+        ))}
       </div>
 
       <Suspense fallback={<Loading />}>
-        <Outlet />
+        <ActiveComponent />
       </Suspense>
     </div>
   );
