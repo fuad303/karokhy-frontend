@@ -23,11 +23,13 @@ type MenuItem = {
   label: string;
   link: string;
   icon: string;
+  order: number;
 };
 
 export default function SideBar() {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const { openSidebar, setOpenSidebar } = useApp();
+  const sortedMenueItems = menuItems.sort((a, b) => a.order - b.order);
 
   const iconMap: Record<string, JSX.Element> = {
     dashboardIcon: <LayoutDashboard size={20} />,
@@ -43,7 +45,7 @@ export default function SideBar() {
     preSaleIcon: <FileSpreadsheet size={20} />,
     Droplets: <Droplets size={20} />,
     internationalIcon: <Earth size={20} />,
-    processIcon: <PackageSearch />
+    processIcon: <PackageSearch />,
   };
 
   useEffect(() => {
@@ -67,7 +69,7 @@ export default function SideBar() {
           پنل مدیریت
         </div>
 
-        {menuItems.map((menu) => (
+        {sortedMenueItems.map((menu) => (
           <li key={menu.id}>
             <NavLink
               to={menu.link}
