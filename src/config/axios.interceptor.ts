@@ -21,36 +21,38 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    if (!error.response) {
+    if (error.response) {
+      const status = error.response.status;
+
+      if (status === 401) {
+        window.location.href = "/login";
+      }
+
+      if (status === 404) {
+        errorNotifier.publish({
+          statusCode: 404,
+          message: "Resouce not found do u understand.",
+        });
+      }
+
+      if (status >= 500) {
+        errorNotifier.publish({
+          statusCode: 500,
+          message: "Internal server error.",
+        });
+      }
+
+      return Promise.reject(error);
+    } else {
+      console.log("There is no response");
+
       errorNotifier.publish({
-        statusCode: 0,
-        message: "Network error, server unreachable!",
+        statusCode: 400,
+        message: "مطمین شوید به انترنت متصل هستید",
       });
 
       return Promise.reject(error);
     }
-
-    const status = error.response.status;
-
-    if (status === 401) {
-      window.location.href = "/login";
-    }
-
-    if (status === 404) {
-      errorNotifier.publish({
-        statusCode: 404,
-        message: "Resouce not found do u understand.",
-      });
-    }
-
-    if (status >= 500) {
-      errorNotifier.publish({
-        statusCode: 500,
-        message: "Internal server error.",
-      });
-    }
-
-    return Promise.reject(error);
   }
 );
 
