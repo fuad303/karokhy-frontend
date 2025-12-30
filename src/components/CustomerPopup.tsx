@@ -4,7 +4,7 @@ type Props = {
   closePopup: () => void;
 };
 
-export default function PurchasePopup({ closePopup }: Props) {
+export default function CustomerPopup({ closePopup }: Props) {
   return (
     <div
       className="bg-white w-130 h-60 p-4 shadow-xl rounded-xl"
