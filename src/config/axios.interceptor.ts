@@ -24,6 +24,13 @@ api.interceptors.response.use(
     if (error.response) {
       const status = error.response.status;
 
+      if (status === 400) {
+        errorNotifier.publish({
+          statusCode: 400,
+          message: "Form is not complete",
+        });
+      }
+
       if (status === 401) {
         window.location.href = "/login";
       }
@@ -31,7 +38,7 @@ api.interceptors.response.use(
       if (status === 404) {
         errorNotifier.publish({
           statusCode: 404,
-          message: "Resouce not found do u understand.",
+          message: "Resource not found do u understand!",
         });
       }
 
@@ -44,10 +51,8 @@ api.interceptors.response.use(
 
       return Promise.reject(error);
     } else {
-      console.log("There is no response");
-
       errorNotifier.publish({
-        statusCode: 400,
+        statusCode: 500,
         message: "مطمین شوید به انترنت متصل هستید",
       });
 
