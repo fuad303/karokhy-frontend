@@ -102,7 +102,6 @@ function AddUserForm() {
                     setRoleType("SHAREHOLDER");
                     setValue("role", "SHAREHOLDER", { shouldValidate: true });
                   }}
-                  // {...register("role")}
                 />
                 شریک
               </label>
