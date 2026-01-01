@@ -5,7 +5,6 @@ import {
 } from "../../schema/AdminNewUser.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "../../config/axios.interceptor";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -16,9 +15,10 @@ function AddUserForm() {
   );
   const {
     register,
+    setValue,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<AdminNewUserType>({
     resolver: zodResolver(AdminNewUserSchema),
     defaultValues: {
@@ -37,20 +37,16 @@ function AddUserForm() {
       navigate("/");
       reset();
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        alert(error.response?.data?.message ?? "مشکلی رخ داد");
-      } else {
-        alert("مشکلی رخ داد");
-      }
+      console.log("خطا در اضافه کردن کاربر", error);
     }
   };
 
   return (
     <>
-      <div className="mt-5">
+      <div className="mt-5  w-70 sm:w-100 lg:w-120">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white p-4 sm:p-6  rounded-xl shadow-md max-w-md mx-auto w-full space-y-4"
+          className="bg-white p-4 sm:p-6  rounded-xl shadow-md  mx-auto  space-y-4"
         >
           <h2 className="text-xl font-semibold mb-2 text-gray-600 text-center">
             اضافه کردن کاربر جدید
@@ -104,7 +100,9 @@ function AddUserForm() {
                   checked={roleType === "SHAREHOLDER"}
                   onChange={() => {
                     setRoleType("SHAREHOLDER");
+                    setValue("role", "SHAREHOLDER", { shouldValidate: true });
                   }}
+                  // {...register("role")}
                 />
                 شریک
               </label>
@@ -116,6 +114,7 @@ function AddUserForm() {
                   checked={roleType === "ACCOUNTANT"}
                   onChange={() => {
                     setRoleType("ACCOUNTANT");
+                    setValue("role", "", { shouldValidate: true });
                   }}
                 />
                 حسابدار
@@ -136,8 +135,8 @@ function AddUserForm() {
                   className="w-full border border-gray-300 outline-primary rounded-md p-2"
                 >
                   <option value="">انتخاب نوع حسابدار</option>
-                  <option value="ACCOUNTANT_REGULAR">حسابدار عادی</option>
-                  <option value="ACCOUNTANT_SUPER">حسابدار ارشد</option>
+                  <option value="REGULAR">حسابدار عادی</option>
+                  <option value="SUPER">حسابدار ارشد</option>
                 </select>
 
                 {errors.role && (
@@ -149,6 +148,7 @@ function AddUserForm() {
 
           <button
             type="submit"
+            disabled={isSubmitting}
             className="w-full bg-primary hover:bg-primary text-white py-2 rounded-md"
           >
             اضافه کردن کاربر
