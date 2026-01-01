@@ -50,7 +50,7 @@ export default function Purchase() {
         <form className="mt-5">
           <div>
             <p className="mb-2 text-gray-800 font-bold">نوع پرداخت</p>
-            <div className="flex gap-2">
+            <div className=" w-50 flex gap-2 flex-wrap">
               <div
                 className={`flex p-1 px-3 rounded-2xl gap-2 cursor-pointer transition ${
                   paymentType === "نقدی"
@@ -58,7 +58,7 @@ export default function Purchase() {
                     : "border border-gray-500"
                 }`}
               >
-                <label className=" text-gray-800">نقدی</label>
+                <label htmlFor="" className=" text-gray-800">نقدی</label>
                 <input
                   type="radio"
                   name="paymentType"
@@ -68,7 +68,7 @@ export default function Purchase() {
                 />
               </div>
               <div
-                className={`flex p-1 px-3 rounded-2xl gap-2 cursor-pointer transition ${
+                className={`flex p-1 px-3 rounded-2xl gap-2 cursor-pointer transition  ${
                   paymentType === "قرضه"
                     ? "border border-primary"
                     : "border border-gray-500"
@@ -83,6 +83,16 @@ export default function Purchase() {
                   onChange={(e) => setPaymentType(e.target.value as "قرضه")}
                 />
               </div>
+
+              {paymentType === "قرضه" && (
+                <div className="mt-3">
+                  <input
+                    type="number"
+                    className="py-1 px-2 text-[14px] w-70 focus:outline-primary border border-gray-600 rounded-sm"
+                    placeholder="مقدار قرضه را وارد کنید"
+                  />
+                </div>
+              )}
             </div>
           </div>
 

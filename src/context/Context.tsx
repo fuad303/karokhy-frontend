@@ -10,6 +10,7 @@ interface AppContextInterface {
   backendErrorMessage: string;
   setBackendErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   backendErrorStatus?: number;
+  setBackendErrorStatus?: React.Dispatch<React.SetStateAction<string>>;
   openSidebar: boolean;
   setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -31,20 +32,17 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
       if (
         event.statusCode === 401 ||
         event.statusCode === 404 ||
-        event.statusCode >= 500 ||
-        event.statusCode === 0
+        event.statusCode === 400 ||
+        event.statusCode >= 500
       ) {
         setBackendErrorPopup(true);
       }
     });
 
-    return unsubscribe; // 🚨 VERY IMPORTANT
+    return unsubscribe;
   }, []);
 
-  const shouldBlockApp =
-    backendErrorPopup &&
-    backendErrorStatus !== undefined &&
-    backendErrorStatus !== 400;
+  const shouldBlockApp = backendErrorPopup && backendErrorStatus !== undefined;
 
   return (
     <AppContext.Provider
@@ -57,11 +55,10 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         setOpenSidebar,
       }}
     >
-      {shouldBlockApp ? (
+      {shouldBlockApp && (
         <ErrorMessageCompo onClose={() => setBackendErrorPopup(false)} />
-      ) : (
-        children
       )}
+      {children}
     </AppContext.Provider>
   );
 };
