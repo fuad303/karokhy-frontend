@@ -12,10 +12,7 @@ export const AdminNewUserSchema = z.object({
   role: z
     .string()
     .refine(
-      (val) =>
-        val === "SHAREHOLDER" ||
-        val === "ACCOUNTANT_SUPER" ||
-        val === "ACCOUNTANT_REGULAR",
+      (val) => val === "SHAREHOLDER" || val === "SUPER" || val === "REGULAR",
       {
         message: "انتخاب نقش ضروری است",
       }

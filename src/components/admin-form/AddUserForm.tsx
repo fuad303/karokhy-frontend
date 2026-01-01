@@ -43,7 +43,7 @@ function AddUserForm() {
 
   return (
     <>
-      <div className="mt-5  w-70 sm:w-100 lg:w-120">
+      <div className="mt-5  w-70 sm:w-100 lg:w-[60%] mx-auto">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="bg-white p-4 sm:p-6  rounded-xl shadow-md  mx-auto  space-y-4"
@@ -114,7 +114,7 @@ function AddUserForm() {
                   checked={roleType === "ACCOUNTANT"}
                   onChange={() => {
                     setRoleType("ACCOUNTANT");
-                    setValue("role", "", { shouldValidate: true });
+                    setValue("role", "");
                   }}
                 />
                 حسابدار
