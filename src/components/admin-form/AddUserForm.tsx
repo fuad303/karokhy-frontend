@@ -43,7 +43,7 @@ function AddUserForm() {
 
   return (
     <>
-      <div className="mt-5  w-70 sm:w-100 lg:w-[60%] mx-auto">
+      <div className="mt-5  w-70 sm:w-100 lg:w-full ">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="bg-white p-4 sm:p-6  rounded-xl shadow-md  mx-auto  space-y-4"
