@@ -20,7 +20,7 @@ function AdminPage() {
   const ActiveComponent = adminSections[activeSection].component;
 
   return (
-    <div className="max-w-4xl mx-auto mt-10">
+    <div className="w-100 mx-auto mt-10">
       <div className="flex gap-4 mb-6 justify-center">
         {Object.entries(adminSections).map(([key, section]) => (
           <button
