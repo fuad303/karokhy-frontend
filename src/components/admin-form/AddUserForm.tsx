@@ -43,7 +43,7 @@ function AddUserForm() {
 
   return (
     <>
-      <div className="mt-5  w-70 sm:w-100 lg:w-full ">
+      <div className="mt-5  w-full sm:w-full lg:w-full  ">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="bg-white p-4 sm:p-6  rounded-xl shadow-md  mx-auto  space-y-4"
@@ -148,7 +148,11 @@ function AddUserForm() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-primary hover:bg-primary text-white py-2 rounded-md"
+            className={
+              isSubmitting
+                ? "w-full bg-primary hover:bg-primary text-white py-2 rounded-md opacity-50 cursor-not-allowed"
+                : "w-full bg-primary hover:bg-primary text-white py-2 rounded-md"
+            }
           >
             اضافه کردن کاربر
           </button>

@@ -40,7 +40,7 @@ function AdminUserList() {
   };
 
   return (
-    <div className="mt-5  w-70 sm:w-100 lg:w-[60%] mx-auto bg-white p-5">
+    <div className="mt-5  w-full sm:w-full lg:w-full mx-auto bg-white p-5">
       <h2 className="text-xl text-gray-600 font-semibold mb-5 text-center">
         لیست کاربران
       </h2>
