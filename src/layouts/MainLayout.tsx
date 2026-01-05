@@ -8,7 +8,7 @@ export default function MainLayout() {
       <SideBar />
       <div className="flex flex-col sm:w-[90%] w-full ">
         <Header />
-        <main className=" flex felx-col justify-center p-4">
+        <main className=" flex flex-col justify-center p-4">
           <Outlet />
         </main>
       </div>
