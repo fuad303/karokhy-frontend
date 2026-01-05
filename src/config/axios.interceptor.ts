@@ -1,5 +1,8 @@
 import axios, { AxiosError } from "axios";
 import { errorNotifier } from "./event-notifier";
+import type { ErrorType } from "../interfaces/error.interface";
+
+
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
@@ -20,44 +23,28 @@ api.interceptors.request.use(
 // RESPONSE INTERCEPTOR
 api.interceptors.response.use(
   (response) => response,
-  (error: AxiosError) => {
-    if (error.response) {
-      const status = error.response.status;
-
-      if (status === 400) {
-        errorNotifier.publish({
-          statusCode: 400,
-          message: "Form is not complete",
-        });
-      }
-
-      if (status === 401) {
-        window.location.href = "/login";
-      }
-
-      if (status === 404) {
-        errorNotifier.publish({
-          statusCode: 404,
-          message: "Resource not found do u understand!",
-        });
-      }
-
-      if (status >= 500) {
-        errorNotifier.publish({
-          statusCode: 500,
-          message: "Internal server error.",
-        });
-      }
-
-      return Promise.reject(error);
-    } else {
+  (error: AxiosError<ErrorType>) => {
+    if (!error.response) {
       errorNotifier.publish({
         statusCode: 500,
         message: "مطمین شوید به انترنت متصل هستید",
       });
-
       return Promise.reject(error);
     }
+
+    const { status, data } = error.response;
+
+    if (status === 401) {
+      window.location.href = "/login";
+      return Promise.reject(error);
+    }
+
+    errorNotifier.publish({
+      statusCode: status >= 500 ? 500 : status,
+      message: data.message,
+    });
+
+    return Promise.reject(error);
   }
 );
 

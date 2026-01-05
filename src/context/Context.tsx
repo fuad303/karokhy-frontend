@@ -33,6 +33,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         event.statusCode === 401 ||
         event.statusCode === 404 ||
         event.statusCode === 400 ||
+        event.statusCode === 409 ||
         event.statusCode >= 500
       ) {
         setBackendErrorPopup(true);
