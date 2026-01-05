@@ -1,13 +1,14 @@
 import { X } from "lucide-react";
+import { createPortal } from "react-dom";
 
 type Props = {
   closePopup: () => void;
 };
 
 export default function CustomerPopup({ closePopup }: Props) {
-  return (
+  return createPortal(
     <div
-      className="bg-white w-130 h-60 p-4 shadow-xl rounded-xl"
+      className="fixed inset-0 w-screen h-screen bg-black/40 backdrop-blur-xl flex items-center justify-center z-50"
       onClick={(e) => e.stopPropagation()}
     >
       <X className="mb-3 cursor-pointer" onClick={closePopup} />
@@ -31,6 +32,7 @@ export default function CustomerPopup({ closePopup }: Props) {
           ثبت مشتری جدید <span>+</span>
         </p>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

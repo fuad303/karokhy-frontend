@@ -1,6 +1,7 @@
 import type React from "react";
 import { useEffect, useRef } from "react";
 import { useApp } from "../../context/Context";
+import { createPortal } from "react-dom";
 
 const ErrorMessageCompo = ({ onClose }: { onClose: () => void }) => {
   const { backendErrorMessage } = useApp();
@@ -20,15 +21,15 @@ const ErrorMessageCompo = ({ onClose }: { onClose: () => void }) => {
       onClose();
     }
   };
-
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 flex items-center justify-center backdrop-blur-xl z-50"
+      className="fixed inset-0 w-screen h-screen bg-black/40 backdrop-blur-xl flex items-center justify-center z-50"
       onClick={handleClickoutSide}
     >
       <div
         ref={PopupRef}
         className="bg-white p-6 rounded-lg shadow-md text-center max-w-sm w-full"
+        onClick={(e) => e.stopPropagation()} // prevents close when clicking modal
       >
         <h2 className="text-xl font-bold text-red-600">خطا</h2>
         <p className="mt-4 text-gray-700">{backendErrorMessage}</p>
@@ -40,7 +41,8 @@ const ErrorMessageCompo = ({ onClose }: { onClose: () => void }) => {
           بستن
         </button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

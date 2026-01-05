@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const AdminNewUserSchema = z.object({
-  username: z.string().min(2, "نام کاربری باید حداقل ۲ حرف باشد"),
+  username: z.string().min(3, "نام کاربری باید حداقل ۳ حرف باشد"),
   password: z.string().min(8, "رمز ورود باید حداقل ۸ کاراکتر باشد"),
   phone: z
     .string()
