@@ -11,8 +11,10 @@ import {
   Newspaper,
   PackageSearch,
   Receipt,
+  Save,
   ShoppingBag,
   ShoppingCart,
+  User,
   UserPlus,
   Users,
 } from "lucide-react";
@@ -29,7 +31,7 @@ type MenuItem = {
 export default function SideBar() {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const { openSidebar, setOpenSidebar } = useApp();
-  const sortedMenueItems = menuItems.sort((a, b) => a.order - b.order);
+  const sortedMenueItems = [...menuItems].sort((a, b) => a.order - b.order);
 
   const iconMap: Record<string, JSX.Element> = {
     dashboardIcon: <LayoutDashboard size={20} />,
@@ -46,6 +48,8 @@ export default function SideBar() {
     Droplets: <Droplets size={20} />,
     internationalIcon: <Earth size={20} />,
     processIcon: <PackageSearch />,
+    userManagementIcon: <User size={20} />,
+    saveIcon: <Save />,
   };
 
   useEffect(() => {
@@ -59,36 +63,45 @@ export default function SideBar() {
   return (
     <aside
       className={`
-          fixed top-0 right-0 h-screen overflow-y-scroll bg-white shadow-xl z-50 w-60 sm:w-70 
-          transition-transform duration-300
-          ${openSidebar ? "translate-x-0" : "translate-x-full sm:translate-x-0"}
-        `}
+        fixed sm:static inset-y-0 right-0
+        w-64
+        bg-white
+        shadow-xl
+        z-50
+        transform transition-transform duration-300
+        ${openSidebar ? "translate-x-0" : "translate-x-full sm:translate-x-0"}
+      `}
     >
-      <ul className="space-y-2 p-4">
-        <div className="flex flex-col items-center mb-10 font-bold text-xl text-gray-700">
+      <nav className="h-full overflow-y-auto p-4">
+        <div className="text-center mb-8 font-bold text-xl text-gray-700">
           پنل مدیریت
         </div>
 
-        {sortedMenueItems.map((menu) => (
-          <li key={menu.id}>
-            <NavLink
-              to={menu.link}
-              onClick={() => setOpenSidebar(false)}
-              className={({ isActive }) =>
-                `flex gap-2 py-2 px-4 text-xl rounded-[5px] text-gray-600
+        <ul className="space-y-2">
+          {sortedMenueItems.map((menu) => (
+            <li key={menu.id}>
+              <NavLink
+                to={menu.link}
+                onClick={() => setOpenSidebar(false)}
+                className={({ isActive }) =>
+                  `
+                  flex items-center gap-3 px-4 py-2 rounded
+                  text-gray-600 text-base
                   ${
                     isActive
                       ? "bg-primary text-white"
                       : "hover:bg-blue-50 hover:text-blue-500"
-                  }`
-              }
-            >
-              {iconMap[menu.icon]}
-              <span>{menu.label}</span>
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+                  }
+                `
+                }
+              >
+                {iconMap[menu.icon]}
+                <span>{menu.label}</span>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </aside>
   );
 }
