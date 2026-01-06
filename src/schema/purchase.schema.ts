@@ -11,7 +11,12 @@ export const purchaseSchema = z
     installmentAmount: z.number().optional(),
     unitPrice: z.number({ message: "قیمت الزامی است" }).positive(),
     quantity: z.number({ message: "مقدار الزامی است" }).positive(),
-    description: z.string(),
+    description: z
+      .string()
+      .trim()
+      .min(5, "توضیحات باید حداقل ۵ حرف باشد")
+      .max(500, "توضیحات نمی‌تواند بیشتر از ۵۰۰ حرف باشد"),
+      
     measureUnit: z.enum(["KG", "LITER", "PIECE"], {
       message: "واحد اندازه‌گیری الزامی است",
     }),

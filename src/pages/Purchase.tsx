@@ -90,7 +90,6 @@ export default function Purchase() {
                     </label>
                   );
                 })}
-               
               </div>
 
               {paymentType === "قرضه" && (
@@ -100,14 +99,12 @@ export default function Purchase() {
                   placeholder="مقدار قرضه"
                   className="mt-3 w-full py-1 px-2 border rounded focus:outline-primary"
                 />
-                
               )}
-               {errors.paymentType && (
+              {errors.paymentType && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.paymentType.message}
                 </p>
-              )} 
-            
+              )}
             </div>
 
             {/* Expense Type */}
@@ -144,10 +141,10 @@ export default function Purchase() {
                   );
                 })}
                 {errors.expenseType && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.expenseType.message}
-                </p>
-              )}
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.expenseType.message}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -200,7 +197,7 @@ export default function Purchase() {
                 </option>
                 <option value="KG">کیلوگرام</option>
                 <option value="LITER">لیتر</option>
-                <option value="PIECE">عدد</option>
+                <option value="PIECE">دانه</option>
               </select>
 
               {errors.measureUnit && (
@@ -237,14 +234,15 @@ export default function Purchase() {
           <div>
             <label className="text-gray-800">توضیحات</label>
             <textarea
+              {...register("description")}
               rows={3}
-              className="w-full border rounded-2xl p-2 focus:outline-primary"
+              className="w-full border rounded-2xl p-2 focus:outline-primary resize-non"
             />
-             {errors.description && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.description.message}
-                </p>
-              )}
+            {errors.description && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.description.message}
+              </p>
+            )}
           </div>
 
           {/* Customer Info */}
