@@ -6,23 +6,23 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "../../config/axios.interceptor";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 function AddUserForm() {
   const navigate = useNavigate();
-  const [roleType, setRoleType] = useState<"SHAREHOLDER" | "ACCOUNTANT" | "">(
-    ""
-  );
+
   const {
     register,
     setValue,
     handleSubmit,
     reset,
+    watch,
+    resetField,
     formState: { errors, isSubmitting },
   } = useForm<AdminNewUserType>({
     resolver: zodResolver(AdminNewUserSchema),
     defaultValues: {
-      role: "",
+      role: undefined,
+      accountantType: undefined,
     },
   });
 
@@ -33,6 +33,7 @@ function AddUserForm() {
         password: data.password,
         phone: data.phone,
         role: data.role,
+        accountantType: data.accountantType,
       });
       navigate("/");
       reset();
@@ -40,7 +41,7 @@ function AddUserForm() {
       console.log("خطا در اضافه کردن کاربر", error);
     }
   };
-
+  const role = watch("role");
   return (
     <>
       <div className="mt-5  w-full sm:w-full lg:w-full  ">
@@ -97,25 +98,17 @@ function AddUserForm() {
                 <input
                   type="radio"
                   value="SHAREHOLDER"
-                  checked={roleType === "SHAREHOLDER"}
+                  {...register("role")}
                   onChange={() => {
-                    setRoleType("SHAREHOLDER");
-                    setValue("role", "SHAREHOLDER", { shouldValidate: true });
+                    setValue("role", "SHAREHOLDER");
+                    resetField("accountantType");
                   }}
                 />
                 شریک
               </label>
 
               <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  value="ACCOUNTANT"
-                  checked={roleType === "ACCOUNTANT"}
-                  onChange={() => {
-                    setRoleType("ACCOUNTANT");
-                    setValue("role", "");
-                  }}
-                />
+                <input type="radio" value="ACCOUNTANT" {...register("role")} />
                 حسابدار
               </label>
             </div>
@@ -124,22 +117,27 @@ function AddUserForm() {
               <p className="text-red-500 text-sm">{errors.role.message}</p>
             )}
 
-            {roleType === "SHAREHOLDER" && (
-              <input type="hidden" value="SHAREHOLDER" {...register("role")} />
-            )}
-            {roleType === "ACCOUNTANT" && (
+            {role === "ACCOUNTANT" && (
               <div>
-                <select
-                  {...register("role")}
-                  className="w-full border border-gray-300 outline-primary rounded-md p-2"
-                >
-                  <option value="">انتخاب نوع حسابدار</option>
-                  <option value="REGULAR">حسابدار عادی</option>
-                  <option value="SUPER">حسابدار ارشد</option>
-                </select>
+                {watch("role") === "ACCOUNTANT" && (
+                  <select
+                    className="w-full border border-gray-300 outline-primary rounded-md p-2"
+                    {...register("accountantType")}
+                    defaultValue=""
+                  >
+                    <option value="">انتخاب نوع حسابدار</option>
+                    <option value="REGULAR">حسابدار عادی</option>
+                    <option value="SUPER">حسابدار ارشد</option>
+                  </select>
+                )}
 
                 {errors.role && (
                   <p className="text-red-500 text-sm">{errors.role.message}</p>
+                )}
+                {errors.accountantType && (
+                  <p className="text-red-500 text-sm">
+                    {errors.accountantType.message}
+                  </p>
                 )}
               </div>
             )}
