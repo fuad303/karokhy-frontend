@@ -2,13 +2,10 @@ import { useForm } from "react-hook-form";
 import { loginSchema, type LoginFormType } from "../../schema/login.schema";
 import api from "../../config/axios.interceptor";
 import { zodResolver } from "@hookform/resolvers/zod";
-import ErrorMessageCompo from "../errors/ErrorMessage";
 import Loading from "../Loading";
 import MountainBackground from "../MountainBg";
 
 const LoginCompo = () => {
-
-
   const {
     register,
     handleSubmit,
@@ -30,7 +27,7 @@ const LoginCompo = () => {
       sessionStorage.setItem("token", res.data.token);
       window.location.href = "/";
     } catch (error: unknown) {
-   console.log(error)
+      console.log(error);
     }
   };
 
@@ -44,11 +41,6 @@ const LoginCompo = () => {
       <MountainBackground />
       {/* Dark overlay - REMOVED backdrop-blur-sm */}
       <div className="absolute inset-0 bg-black/60"></div>
-
-      {/* Error popup */}
-      {backendErrorPopup && (
-        <ErrorMessageCompo onClose={() => setBackendErrorPopup(false)} />
-      )}
 
       {/* Login Card - REMOVED backdrop-blur-md, increased opacity */}
       <div className="relative z-10 w-full max-w-md p-10 bg-white/85 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200">
