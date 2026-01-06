@@ -30,7 +30,6 @@ const LoginCompo = () => {
       console.log(error);
     }
   };
-
   if (isSubmitting) return <Loading />;
 
   return (
@@ -71,7 +70,6 @@ const LoginCompo = () => {
               </p>
             )}
           </div>
-
           {/* Password */}
           <div>
             <label
@@ -94,7 +92,6 @@ const LoginCompo = () => {
               </p>
             )}
           </div>
-
           {/* Role */}
           <div>
             <span className="block text-sm font-medium text-gray-800">نقش</span>
@@ -123,7 +120,6 @@ const LoginCompo = () => {
               </p>
             )}
           </div>
-
           {/* Submit */}
           <button
             disabled={isSubmitting}

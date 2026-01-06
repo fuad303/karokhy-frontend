@@ -6,6 +6,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "../../config/axios.interceptor";
 import { useNavigate } from "react-router-dom";
+import Loading from "../Loading";
 
 function AddUserForm() {
   const navigate = useNavigate();
@@ -42,6 +43,8 @@ function AddUserForm() {
     }
   };
   const role = watch("role");
+
+  if (isSubmitting) return <Loading />;
   return (
     <>
       <div className="mt-5  w-full sm:w-full lg:w-full  ">
