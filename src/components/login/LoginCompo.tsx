@@ -1,16 +1,13 @@
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { loginSchema, type LoginFormType } from "../../schema/login.schema";
 import api from "../../config/axios.interceptor";
-import { useApp } from "../../context/Context";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorMessageCompo from "../errors/ErrorMessage";
 import Loading from "../Loading";
 import MountainBackground from "../MountainBg";
 
 const LoginCompo = () => {
-  const { backendErrorPopup, setBackendErrorMessage, setBackendErrorPopup } =
-    useApp();
+
 
   const {
     register,
@@ -33,12 +30,7 @@ const LoginCompo = () => {
       sessionStorage.setItem("token", res.data.token);
       window.location.href = "/";
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        setBackendErrorMessage(error.response?.data?.message ?? "مشکلی رخ داد");
-      } else {
-        setBackendErrorMessage("مشکلی رخ داد");
-      }
-      setBackendErrorPopup(true);
+   console.log(error)
     }
   };
 
