@@ -33,12 +33,7 @@ const LoginCompo = () => {
       sessionStorage.setItem("token", res.data.token);
       window.location.href = "/";
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        setBackendErrorMessage(error.response?.data?.message ?? "مشکلی رخ داد");
-      } else {
-        setBackendErrorMessage("مشکلی رخ داد");
-      }
-      setBackendErrorPopup(true);
+  console.log(error)
     }
   };
 
