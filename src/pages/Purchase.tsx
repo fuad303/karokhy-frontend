@@ -260,11 +260,7 @@ export default function Purchase() {
         </form>
       </div>
 
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <CustomerPopup closePopup={() => setIsOpen(false)} />
-        </div>
-      )}
+      {isOpen && <CustomerPopup closePopup={() => setIsOpen(false)} />}
     </>
   );
 }
