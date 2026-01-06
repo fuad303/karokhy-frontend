@@ -15,10 +15,13 @@ export default function Purchase() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<PurchaseFormData>({
     resolver: zodResolver(purchaseSchema),
   });
+
+  const currency = watch("currency");
 
   useEffect(() => {
     if (!isOpen) return;
@@ -220,6 +223,7 @@ export default function Purchase() {
                 </option>
                 <option value="TOMAN">تومان</option>
                 <option value="USD">دالر</option>
+                <option value="AFG">افغانی</option>
               </select>
 
               {errors.currency && (
@@ -229,6 +233,24 @@ export default function Purchase() {
               )}
             </div>
           </div>
+
+          {currency && currency !== "USD" && (
+            <div className="flex flex-col">
+              <label className="font-bold text-gray-700">
+                دلار به قیمت روز
+              </label>
+              <input
+                {...register("exchangeRate")}
+                type="number"
+                className="px-3 py-1.5 focus:outline-primary border rounded-sm"
+              />
+              {errors.exchangeRate && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.exchangeRate.message}
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Description */}
           <div>

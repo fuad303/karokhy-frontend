@@ -20,7 +20,7 @@ export const purchaseSchema = z
     measureUnit: z.enum(["KG", "LITER", "PIECE"], {
       message: "واحد اندازه‌گیری الزامی است",
     }),
-
+    exchangeRate: z.number({message: "قیمت دلار به نرخ روز الزامی است."}).positive(),
     currency: z.enum(["TOMAN", "USD"], {
       message: "واحد پول الزامی است",
     }),

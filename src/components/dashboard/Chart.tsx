@@ -1,39 +1,28 @@
 import { useEffect, useState } from "react";
-import {Line};
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Line } from "react-chartjs-2";
+// import { getMonthlyReports } from "@/actions/dashboard/chart-data";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-  Legend
-);
-
+interface MonthlyData {
+  date: string;
+  amount: number;
+}
 
 export default function Chart() {
-   const [items, setItems] = useState<>([]);
+  const [items, setItems] = useState<MonthlyData[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       // const res = await getMonthlyReports();
       // if (!res.success || !res.data) {
-      //   return alert("معامله ای در این ماه نشده");
+      //   alert("معامله ای در این ماه نشده");
+      //   return;
       // }
       // setItems(res.data);
     };
 
     fetchData();
   }, []);
+
   const MONTHS = [
     "حمل",
     "ثور",
@@ -49,57 +38,68 @@ export default function Chart() {
     "حوت",
   ];
 
-  // items = your fetched data
-  // items must contain { date: "2025-11-01", amount: 500 }
-
-  const chartData = MONTHS.map((month, index) => {
+  // normalize backend data → always 12 months
+  const amounts = MONTHS.map((_, index) => {
     const match = items.find((i) => {
       const d = new Date(i.date);
-      return d.getMonth() === index; // 0 = Jan, 11 = Dec
+      return d.getMonth() === index;
     });
 
-    return {
-      month,
-      amount: match ? match.amount : 0, // default 0 if missing
-    };
+    return match ? match.amount : 0;
   });
+
+  const data = {
+    labels: MONTHS,
+    datasets: [
+      {
+        label: "Amount",
+        data: amounts,
+        borderColor: "#0070f3",
+        backgroundColor: "rgba(0,112,243,0.15)",
+        tension: 0.4, // smooth curve (monotone equivalent)
+        fill: true,
+        pointRadius: 4,
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        callbacks: {
+          label: (ctx: any) => `${ctx.parsed.y} AFN`,
+        },
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          color: "#6b7280",
+        },
+      },
+      y: {
+        grid: {
+          color: "#e5e7eb",
+          borderDash: [3, 3],
+        },
+        ticks: {
+          color: "#9ca3af",
+        },
+      },
+    },
+  };
 
   return (
     <div className="w-full h-64 md:h-80 bg-white p-4 rounded-xl shadow">
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData} margin={{ left: 40, right: 10 }}>
-          <Line
-            type="monotone"
-            dataKey="amount"
-            stroke="#0070f3"
-            strokeWidth={3}
-          />
-
-          {/* subtle grid */}
-          <CartesianGrid stroke="#e5e7eb" strokeDasharray="3 3" />
-
-          {/* X-axis: months */}
-          <XAxis dataKey="month" tick={{ fill: "#6b7280" }} />
-
-          {/* Y-axis: show subtle markers */}
-          <YAxis
-            tick={{ fill: "#9ca3af", fontSize: 12 }}
-            tickFormatter={(value) => ${value}} // or leave empty if you want only lines
-            axisLine={false} // removes the main axis line for cleaner look
-            tickLine={false} // removes small tick marks
-          />
-
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "#ffffff",
-              borderRadius: "8px",
-              border: "1px solid #e5e7eb",
-            }}
-            labelStyle={{ color: "#374151" }}
-            formatter={(value) => [${value} AFN, "Amount"]}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <Line data={data} options={options} />
     </div>
   );
 }

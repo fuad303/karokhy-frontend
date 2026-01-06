@@ -2,6 +2,7 @@
 // import { useApp } from "../context/Context";
 // import type { HomeInterface } from "../interfaces/home.interface";
 
+import Chart from "../components/dashboard/Chart";
 import DailyReports from "../components/dashboard/DailyReports";
 
 const Home = () => {
