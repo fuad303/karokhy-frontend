@@ -23,7 +23,7 @@ export default function Header() {
         />
       )}
 
-      <header className="h-16 bg-white shadow flex items-center px-4 sm:px-6 z-30">
+      <header className="h-16 bg-white shadow flex items-center px-4 sm:px-6 z-30 justify-between">
         <div className="flex items-center gap-4">
           <button className="sm:hidden" onClick={() => setOpenSidebar(true)}>
             <Menu />
@@ -46,7 +46,7 @@ export default function Header() {
           />
         </div>
 
-        <div className="flex items-center gap-4 ml-auto">
+        <div className="flex items-center gap-4">
           <button
             onClick={handleLogoOut}
             className="bg-primary text-white px-3 py-1.5 rounded text-sm"

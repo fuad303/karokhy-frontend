@@ -4,11 +4,11 @@ import Header from "../components/header-sidebar/Header";
 
 export default function MainLayout() {
   return (
-    <div className="flex  min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100">
       <SideBar />
-      <div className="flex flex-col sm:w-[90%] w-full ">
+      <div className="flex flex-col w-full">
         <Header />
-        <main className=" flex flex-col justify-center p-4">
+        <main className="flex flex-col justify-center p-4">
           <Outlet />
         </main>
       </div>
