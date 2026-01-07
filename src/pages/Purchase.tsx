@@ -15,10 +15,13 @@ export default function Purchase() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<PurchaseFormData>({
     resolver: zodResolver(purchaseSchema),
   });
+
+  const currency = watch("currency");
 
   useEffect(() => {
     if (!isOpen) return;
@@ -90,7 +93,6 @@ export default function Purchase() {
                     </label>
                   );
                 })}
-               
               </div>
 
               {paymentType === "قرضه" && (
@@ -100,14 +102,12 @@ export default function Purchase() {
                   placeholder="مقدار قرضه"
                   className="mt-3 w-full py-1 px-2 border rounded focus:outline-primary"
                 />
-                
               )}
-               {errors.paymentType && (
+              {errors.paymentType && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.paymentType.message}
                 </p>
-              )} 
-            
+              )}
             </div>
 
             {/* Expense Type */}
@@ -144,10 +144,10 @@ export default function Purchase() {
                   );
                 })}
                 {errors.expenseType && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.expenseType.message}
-                </p>
-              )}
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.expenseType.message}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -200,7 +200,7 @@ export default function Purchase() {
                 </option>
                 <option value="KG">کیلوگرام</option>
                 <option value="LITER">لیتر</option>
-                <option value="PIECE">عدد</option>
+                <option value="PIECE">دانه</option>
               </select>
 
               {errors.measureUnit && (
@@ -223,6 +223,7 @@ export default function Purchase() {
                 </option>
                 <option value="TOMAN">تومان</option>
                 <option value="USD">دالر</option>
+                <option value="AFG">افغانی</option>
               </select>
 
               {errors.currency && (
@@ -233,18 +234,37 @@ export default function Purchase() {
             </div>
           </div>
 
+          {currency && currency !== "USD" && (
+            <div className="flex flex-col">
+              <label className="font-bold text-gray-700">
+                دلار به قیمت روز
+              </label>
+              <input
+                {...register("exchangeRate")}
+                type="number"
+                className="px-3 py-1.5 focus:outline-primary border rounded-sm"
+              />
+              {errors.exchangeRate && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.exchangeRate.message}
+                </p>
+              )}
+            </div>
+          )}
+
           {/* Description */}
           <div>
             <label className="text-gray-800">توضیحات</label>
             <textarea
+              {...register("description")}
               rows={3}
-              className="w-full border rounded-2xl p-2 focus:outline-primary"
+              className="w-full border rounded-2xl p-2 focus:outline-primary resize-non"
             />
-             {errors.description && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.description.message}
-                </p>
-              )}
+            {errors.description && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.description.message}
+              </p>
+            )}
           </div>
 
           {/* Customer Info */}
@@ -262,11 +282,7 @@ export default function Purchase() {
         </form>
       </div>
 
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <CustomerPopup closePopup={() => setIsOpen(false)} />
-        </div>
-      )}
+      {isOpen && <CustomerPopup closePopup={() => setIsOpen(false)} />}
     </>
   );
 }
